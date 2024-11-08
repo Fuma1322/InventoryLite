@@ -3,7 +3,7 @@ const express = require("express")
 const app = express()
 const cors = require("cors")
 const morgan = require("morgan")
-const apiError = require("./utils/apiError")
+const ApiError = require("./utils/ApiError")
 const ErrorHandling = require("./middlewares/ErrorHandler")
 
 app.use(cors())
