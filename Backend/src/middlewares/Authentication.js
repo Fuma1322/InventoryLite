@@ -1,28 +1,22 @@
-const ApiError = require("../utils/ApiError");
-const httpStatus = require("http-status");
-const { validateToken } = require("../utils/Token.utils");
+const ApiError = require("../utils/ApiError")
+const { validateToken } = require("../utils/Token.utils")
 
-const Authentication = (req,res,next) => {
-    try {
-        const headers = req.headers['authorization'] || ''
+const Authentication = (req,res,next ) => {
+    try{
+         const headers = req.headers['authorization'] || ''
+         if(!headers){
+            throw new ApiError(httpStatus.UNAUTHORIZED,"Please login first")
+         }
+         const auth_token = headers.split("")[1]
 
-        if(!headers || !headers.startsWith("Bearer")) {
-            throw new ApiError(httpStatus.UNAUTHORIZED, "Please login first");
+         if(!auth_token){
+            throw new ApiError(httpStatus.UNAUTHORIZED,"please provide valid ");
+         }
+         const data = validateToken(auth_token)
+         req.user = data.userid
+         next()
         }
-
-        const auth_token = headers.split(" ")[1]
-
-        if (!auth_token) {
-            throw new ApiError(httpStatus.UNAUTHORIZED, "Please provide valid token") 
+        catch(error) {
+            next(error)
         }
-        
-        const data = validateToken(auth_token)
-        req.user = data.userid
-        next()
-
-    } catch (error) {
-        next(error)
-    }
 }
-
-module.exports = Authentication
