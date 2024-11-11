@@ -14,15 +14,10 @@ router.post("/register",ConsumerValidation.RegisterConsumer,Validation,ConsumerC
 router.delete("/delete/:id",ConsumerValidation.Params_id,Validation,ConsumerController.DeleteConsumer)
 
 router.route("/dashboard")
-.get(ConsumerController.DashboardData)
-;
-
-
+.get(ConsumerController.DashboardData);
 
 router.get("/get/:id",ConsumerValidation.Params_id,Validation,ConsumerController.getById)
 router.patch("/update/:id",ConsumerValidation.RegisterConsumer,Validation,ConsumerController.updateById)
-
-
 
 //
 

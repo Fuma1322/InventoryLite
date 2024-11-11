@@ -195,7 +195,9 @@ class ConsumerService{
                  orders:orders.length,
                  sell:arr.length>0 ?arr.flat(2).reduce((a,c)=>a+c):arr
             }
-    }   
+
+    }
+    
 }
 
 module.exports = ConsumerService

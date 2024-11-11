@@ -1,10 +1,13 @@
-class ApiError extends Error {
-  constructor(statusCode, msg) {
-    super(msg); // Call parent constructor
-    this.statusCode = statusCode || 500; // Ensure that statusCode is always defined
-    this.message = msg; // Set the error message
-    Error.captureStackTrace(this, this.constructor); // Capture the stack trace
+class ApiError extends Error{
+  statusCode = 500
+  constructor(statusCode,msg){
+      super(msg)
+      this.message = msg
+      this.statusCode  = statusCode;
+
+      // Error.
+
   }
 }
 
-module.exports = ApiError;
+module.exports =ApiError
