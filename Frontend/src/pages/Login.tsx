@@ -3,6 +3,7 @@ import * as yup from "yup"
 import { Button } from "primereact/button"
 import { Link, useNavigate } from "react-router-dom"
 import { useLoginUserMutation } from "../provider/queries/Auth.query"
+import { toast } from "sonner"
 
 function Login() {
     const [LoginUser, LoginUserResponse] = useLoginUserMutation()
@@ -27,18 +28,18 @@ function Login() {
         try {
             const{ data, error}: any = await LoginUser(e)
             if (error) {
-                console.log(error.data.message);
+                toast.error(error.data.message);
                 return
             }
 
             // console.log(data,error)
 
             localStorage.setItem("token",data.token)
-
+            toast.success("Login Successfull")
            resetForm()
            navigate("/")
         } catch (error:any) {
-            console.log(error.message)
+            toast.error(error.message)
         }
     }
 
