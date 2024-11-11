@@ -21,6 +21,12 @@ class ConsumerValidation {
         query("page").optional(),
         query("query").optional(),
     ]
+
+    
+    
+    
+ 
+
     
 }
 

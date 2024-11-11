@@ -196,7 +196,12 @@ class ConsumerService{
                  sell:arr.length>0 ?arr.flat(2).reduce((a,c)=>a+c):arr
             }
 
+
+
+
     }
+    
+
     
 }
 

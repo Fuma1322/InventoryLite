@@ -3,7 +3,6 @@ const Authentication = require("../middlewares/Authentication");
 const ConsumerController = require("../controllers/Consumer.controller");
 const ConsumerValidation = require("../validations/Consumer.validation");
 const Validation = require("../middlewares/Validation");
-
 const router = express.Router();
 
 router.use(Authentication);
@@ -14,10 +13,15 @@ router.post("/register",ConsumerValidation.RegisterConsumer,Validation,ConsumerC
 router.delete("/delete/:id",ConsumerValidation.Params_id,Validation,ConsumerController.DeleteConsumer)
 
 router.route("/dashboard")
-.get(ConsumerController.DashboardData);
+.get(ConsumerController.DashboardData)
+;
+
+
 
 router.get("/get/:id",ConsumerValidation.Params_id,Validation,ConsumerController.getById)
 router.patch("/update/:id",ConsumerValidation.RegisterConsumer,Validation,ConsumerController.updateById)
+
+
 
 //
 

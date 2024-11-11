@@ -19,4 +19,4 @@ const Validation = (req,res,next)=>{
             }
 }
 
-module.exports = Validation
+module.exports =Validation
