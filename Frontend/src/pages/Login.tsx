@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ErrorMessage, Field, Formik } from "formik"
 import * as yup from "yup"
 import { Button } from "primereact/button"

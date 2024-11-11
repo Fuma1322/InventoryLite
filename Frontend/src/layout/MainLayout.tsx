@@ -20,7 +20,8 @@ const MainLayout = ({ children }:{children: React.ReactNode}) => {
                 </SubMenu> */}
                 <MenuItem className="lg:hidden" onClick={() => dispatch(toggleSidebar()) } > {selector.toggle ? <IoIosArrowDropright className="text-2xl" /> : <IoIosArrowDropleft className="text-2xl" />}</MenuItem>
                 <MenuItem component={<Link to="/"/>} icon={<MdOutlineSpaceDashboard className='text-2xl' /> }>Dashboard</MenuItem>
-                <MenuItem component={<Link to="/about"/>} icon={<LiaFileInvoiceSolid className='text-2xl' /> }>About</MenuItem>
+               
+                <MenuItem component={<Link to="/invoice"/>} icon={<LiaFileInvoiceSolid className='text-2xl' /> }>Invoice</MenuItem>
             </Menu>
         </Sidebar>
         <div className="w-full">

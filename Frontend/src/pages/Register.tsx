@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ErrorMessage, Field, Formik } from "formik"
 import * as yup from "yup"
 import { Button } from "primereact/button"
@@ -27,7 +28,7 @@ function Register() {
         password: yup.string().min(5, "Password must be greater than 5 characters").required("password is required"),
     })
 
-    const OnSubmitHandler = async (e: User, {resetForm}: any) => {
+    const OnSubmitHandler = async (e: User, {resetForm}:any) => {
         // console.log({e});
         try {
             const{ data, error}: any = await registerUser(e)

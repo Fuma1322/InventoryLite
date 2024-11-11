@@ -1,4 +1,4 @@
-const ApiError = require('../utils/ApiError'); // Adjust the path as needed
+const ApiError = require('../utils/ApiError'); 
 
 const ErrorHandling = (err, req, res, next) => {
   // Initialize the error response object
