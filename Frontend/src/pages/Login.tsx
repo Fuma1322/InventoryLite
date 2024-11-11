@@ -1,10 +1,12 @@
 import { ErrorMessage, Field, Formik } from "formik"
 import * as yup from "yup"
 import { Button } from "primereact/button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useLoginUserMutation } from "../provider/queries/Auth.query"
 
 function Login() {
-
+    const [LoginUser, LoginUserResponse] = useLoginUserMutation()
+    const navigate = useNavigate();
     type User = {
         email: string,
         password: string
@@ -21,8 +23,23 @@ function Login() {
     })
 
     const OnSubmitHandler = async (e: User, {resetForm}: any) => {
-        console.log({e});
-        resetForm()
+        // console.log({e});
+        try {
+            const{ data, error}: any = await LoginUser(e)
+            if (error) {
+                console.log(error.data.message);
+                return
+            }
+
+            // console.log(data,error)
+
+            localStorage.setItem("token",data.token)
+
+           resetForm()
+           navigate("/")
+        } catch (error:any) {
+            console.log(error.message)
+        }
     }
 
   return (
@@ -42,7 +59,7 @@ function Login() {
                             <ErrorMessage component={'p'} className="text-red-500 text-sm" name="password" />
                         </div>
                         <div className="mb-3 py-2">
-                            <Button type="submit" className="w-full bg-red-500 text-white py-3 px-2 flex items-center justify-center">
+                            <Button loading={LoginUserResponse.isLoading} type="submit" className="w-full bg-red-500 text-white py-3 px-2 flex items-center justify-center">
                                 Submit
                             </Button>
                         </div>

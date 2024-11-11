@@ -14,7 +14,7 @@ function App() {
       setIsLoading(false)
       return
     } catch (error) {
-      navigate("/")
+      navigate("/login")
       return
     }
   }
@@ -22,7 +22,7 @@ function App() {
     const token = localStorage.getItem("token") || ''
 
     if(!token) {
-        navigate("/")
+        navigate("/login")
         return
     } else {
       (async() => {
