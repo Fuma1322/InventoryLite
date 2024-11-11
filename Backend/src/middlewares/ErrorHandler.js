@@ -1,25 +1,18 @@
-const ApiError = require('../utils/ApiError');
+const ApiError = require('../utils/ApiError'); // Adjust the path as needed
 
 const ErrorHandling = (err, req, res, next) => {
-  const obj = {};
+  // Initialize the error response object
+  const obj = {
+    statusCode: err instanceof ApiError ? err.statusCode || 500 : 400,
+    message: err.message || "An unexpected error occurred",
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+  };
 
-  // Check if the error is an instance of ApiError
-  if (err instanceof ApiError) {
-    obj.statusCode = err.statusCode || 500; // Default to 500 if no statusCode is set
-    obj.message = err.message || "Something went wrong";
-    obj.stack = process.env.NODE_ENV === 'development' ? err.stack : undefined; // Include stack only in development
-  } else {
-    // For general errors
-    obj.statusCode = err.statusCode || 400; // Default to 400 if no statusCode is set
-    obj.message = err.message || "An unexpected error occurred";
-    obj.stack = process.env.NODE_ENV === 'development' ? err.stack : undefined; // Include stack only in development
-  }
-
-  // Send response with statusCode and message
+  // Set response status and return error details
   res.status(obj.statusCode).json({
     success: false,
     message: obj.message,
-    ...(obj.stack && { stack: obj.stack }) // Include stack trace if available
+    ...(obj.stack && { stack: obj.stack }) // Include stack trace if in development mode
   });
 };
 
