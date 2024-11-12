@@ -1,11 +1,9 @@
-require("dotenv").config(); // Ensure .env variables are loaded
+class PUBLIC_DATA{
 
-class PUBLIC_DATA {
-    static port = process.env.PORT || 4000
-    static mongoURI = process.env.MONGO_URI || `mongodb://localhost/WingsCafe_Inventory`
-    static jwt_auth = process.env.JWT_AUTH || "@#@%%%)(&&)()^)(&&%$#@#$%^)"
+    static port = process.env.PORT || 4000 
+    static mongo_uri = process.env.MONGO_URI || `mongodb://localhost/wingcafe___` 
+    static jwt_auth = process.env.JWT_AUTH || "@#$%^&*(@#$%^&*($%^))#$%^&"
 }
-
 module.exports = {
     PUBLIC_DATA
-};
+}

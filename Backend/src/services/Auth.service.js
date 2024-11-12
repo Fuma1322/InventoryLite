@@ -1,68 +1,115 @@
-const { UserModel, ProfileModel } = require("../models");
-const httpStatus = require("http-status");
-const ApiError = require("../utils/ApiError");
-const bcrypt = require('bcryptjs');
-const jwt = require("jsonwebtoken");
-const { generatetoken } = require("../utils/Token.utils");
+const httpStatus = require("http-status")
+const { UserModel,ProfileModel } = require("../models")
+const ApiError = require("../utils/ApiError")
+const { generatoken } = require("../utils/Token.utils")
+const axios =  require("axios");
+class AuthService{
+       static  async RegisterUser(body){
 
-class AuthService {
-  // Method to register a new user
-  static async RegisterUser(body) {
-    const { name, email, password } = body;
+                // request
+                const {email,password,name,token} = body
 
-    // Check if user already exists
-    const existingUser = await UserModel.findOne({ email });
-    if (existingUser) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Email already in use");
-    }
+                // console.log("1---- ",token);
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+                const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify`,{},{
+                    params:{
+                    secret:process.env.CAPTCHA_SCREATE_KEY,
+                    response:token,
+                }
+                })
 
-    // Create the user in the database
-    const user = await UserModel.create({
-      name,
-      email,
-      password: hashedPassword
-    });
+                const data =await response.data;
+                // console.log("2---- ",JSON.stringify(data));
 
-    // Generate a JWT token and refresh token
-    const token = generatetoken(user);
-    const refresh_token = generatetoken(user, '2d'); // Setting expiration for the refresh token
+                if(!data.success){
+                        // console.log("yhhh it works"); 
 
-    // Create an associated profile for the user
-    await ProfileModel.create({
-      user: user._id,
-      refresh_token
-    });
+                        throw new ApiError(httpStatus.BAD_REQUEST,"Captcha Not Valid")
+                }
 
-    return { msg: "User registered successfully", token, refresh_token };
-  }
 
-  // Method for user login
-  static async LoginUser(body) {
-    const { email, password } = body;
 
-    // Check if the user exists
-    const user = await UserModel.findOne({ email });
-    if (!user) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "User not registered");
-    }
 
-    // Verify the password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Invalid password");
-    }
 
-    // Generate a JWT token for the logged-in user
-    const token = generatetoken(user);
+                const checkExist = await UserModel.findOne({email})
+                if(checkExist){
+                    throw new ApiError(httpStatus.BAD_REQUEST,"User Alrady Regisrered")
+                    return
+                }
 
-    return {
-      msg: "User logged in successfully",
-      token: token
-    };
-  }
+            const user =     await UserModel.create({
+                    email,password,name
+                })
+
+                const tokend = generatoken(user)
+                const refresh_token = generatoken(user,'2d')
+                await ProfileModel.create({
+                            user:user._id,
+                            refresh_token
+                })  
+
+
+                return {
+                    msg:"User Register Successflly",
+                    token:tokend
+                }    
+
+       }
+        static  async LoginUser(body){
+        const {email,password,name,token} = body
+
+        
+                const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify`,{},{
+                    params:{
+                    secret:process.env.CAPTCHA_SCREATE_KEY,
+                    response:token,
+                }
+                })
+
+                const data =await response.data;
+                // console.log("2---- ",JSON.stringify(data));
+
+                if(!data.success){
+                        // console.log("yhhh it works"); 
+
+                        throw new ApiError(httpStatus.BAD_REQUEST,"Captcha Not Valid")
+                }
+                const checkExist = await UserModel.findOne({email})
+                if(!checkExist){
+                    throw new ApiError(httpStatus.BAD_REQUEST,"User Not Regisrered")
+                    return
+                }
+
+                if(password !==checkExist.password){
+ throw new ApiError(httpStatus.BAD_REQUEST,"Invalid Credentials")
+                    return
+                }
+             
+   const tokend = generatoken(checkExist) 
+              
+                return {
+                    msg:"User Login Successflly",
+                    token:tokend
+                }    
+
+       }
+         static  async ProfileService(user){ 
+
+                      const checkExist = await UserModel.findById(user).select("name email")
+                if(!checkExist){
+                    throw new ApiError(httpStatus.BAD_REQUEST,"User Not Regisrered")
+                    return
+                }
+
+
+   
+              
+                return {
+                    msg:"Data fetched",
+                    user:checkExist
+                }    
+
+       }
 }
 
-module.exports = AuthService;
+module.exports = AuthService

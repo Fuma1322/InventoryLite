@@ -3,7 +3,6 @@ const Authentication = require("../middlewares/Authentication");
 const ConsumerController = require("../controllers/Consumer.controller");
 const ConsumerValidation = require("../validations/Consumer.validation");
 const Validation = require("../middlewares/Validation");
-
 const router = express.Router();
 
 router.use(Authentication);

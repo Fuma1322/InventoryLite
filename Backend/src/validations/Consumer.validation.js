@@ -1,4 +1,3 @@
-
 const {body, param, query} = require("express-validator")
 class ConsumerValidation {
 

@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
-const { PUBLIC_DATA } = require('../../constant');
+const { default: mongoose } = require("mongoose");
+const { PUBLIC_DATA } = require("../../constant");
 
-exports.ConnectDB = async () => {
+exports.ConnectDB = async()=>{
     try {
-        await mongoose.connect(PUBLIC_DATA.mongoURI);
-        console.log(`Connected to MongoDB at ${mongoose.connection.host}`);
+        await mongoose.connect(PUBLIC_DATA.mongo_uri)
+        console.log(`the app is connect with ${mongoose.connection.host}`);
     } catch (error) {
-        console.error("Failed to connect to MongoDB:", error);
-        process.exit(1);
+            mongoose.disconnect();
+            process.exit(1)
     }
-};
+}

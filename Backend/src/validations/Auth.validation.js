@@ -1,22 +1,19 @@
-const {body} = require ("express-validator")
+const {body} = require("express-validator")
 class AuthValidation {
 
+
     static RegisterUser = [
-        body("name").notEmpty().withMessage("Name cannot be empty"),
-        body("email").isEmail().withMessage("Email must be valid").notEmpty().
-        withMessage("Email cannot be empty"),
-        body("password").isLength({min:6}).withMessage("Password include minimum of 6 characters").
-        notEmpty().withMessage("Password is required"),
-    ]
-    static LoginUser = [
-        body("name").notEmpty().withMessage("Name cannot be empty"),
-        body("email").isEmail().withMessage("Email must be valid").notEmpty().
-        withMessage("Email cannot be empty"),
-        body("password").isLength({min:6}).withMessage("Password include minimum of 6 characters").
-        notEmpty().withMessage("Password is required"),
+        body("token").notEmpty().withMessage("token is Required"),
+        body("name").notEmpty().withMessage("name can not be empty"),
+        body("email").isEmail().withMessage("email must be valid").notEmpty().withMessage("name can not be empty"),
+        body("password").isLength({min:6}).withMessage("password include mininum 6 characters").notEmpty().withMessage("password is required")
     ]
 
-    
+   static LoginUser = [ 
+        //     body("token").notEmpty().withMessage("token is Required"),
+            body("email").isEmail().withMessage("email must be valid").notEmpty().withMessage("name can not be empty"),
+            body("password").isLength({min:6}).withMessage("password include mininum 6 characters").notEmpty().withMessage("password is required")
+    ]
 }
 
 module.exports = AuthValidation

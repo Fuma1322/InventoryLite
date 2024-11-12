@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> deba67a7443d80805c066b30a3f7213465066e1b
 const httpStatus = require("http-status")
 const { OrdersModel } = require("../models")
 const ApiError = require("../utils/ApiError")
@@ -92,4 +95,8 @@ class OrderService{
         
 }
 
+<<<<<<< HEAD
 module.exports = OrderService
+=======
+module.exports = OrderService
+>>>>>>> deba67a7443d80805c066b30a3f7213465066e1b

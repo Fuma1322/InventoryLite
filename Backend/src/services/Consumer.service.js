@@ -138,37 +138,20 @@ class ConsumerService{
             return {
                 msg:"Consumer Update :)"
             }
-
-        
     }
 
      static async GetUserForSearch(user){ 
-
-                
-
 
        const data =  await ConsumerModel.find({user}).select("name dob")
                  
        ;
 
         //total document 
-
- 
-
-
             return {
                 users:data 
             }
-
-
-
-
     }
-     static async DashboardData(user){ 
-
-                
-
-
+     static async DashboardData(user){          
        const consumers =  await ConsumerModel.countDocuments({user})
        const orders =  await OrdersModel.find({user}).select("items.price -_id") 
                  
@@ -187,15 +170,12 @@ class ConsumerService{
 
         //total document 
 
- 
-
-
             return {
                 consumers,
                  orders:orders.length,
                  sell:arr.length>0 ?arr.flat(2).reduce((a,c)=>a+c):arr
             }
-    }   
+    } 
 }
 
 module.exports = ConsumerService

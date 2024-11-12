@@ -5,7 +5,7 @@ const ConsumerService = require("../services/Consumer.service");
 class ConsumerController{
             static RegisterConsumer= CatchAsync(async(req,res)=>{
                 const res_obj  = await ConsumerService.RegisterConsumer(req?.user,req.body);
-                return res.status(httpStatus.CREATED).json(res_obj)
+                return    res.status(httpStatus.CREATED).json(res_obj)
                  
             })
              static updateById= CatchAsync(async(req,res)=>{
