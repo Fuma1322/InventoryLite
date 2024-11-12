@@ -1,45 +1,70 @@
-import { Chart } from "primereact/chart"
-import { useEffect, useState } from "react"
+
+import   { useState, useEffect } from 'react';
+import { Chart } from 'primereact/chart';
+import { useDashboardDataQuery } from '../../../provider/queries/Users.query';
+import Loader from '../../../components/Loader';
+import { useLocation } from 'react-router-dom';
 
 export default function BasicChart() {
+
+    const {  data,isError,isLoading,isFetching } = useDashboardDataQuery({})
+    const location = useLocation()
+
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
 
+    
     useEffect(() => {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const data = {
-            labels: ['A', 'B', 'C'],
+
+            if(!data){
+                return
+            }
+
+        const chartData = {
+            labels: ['user', 'orders','sell' ],
             datasets: [
                 {
-                    data: [540, 325, 702],
+                    label: ['Total'],
+                    data: [data.consumers, data.orders, data.sell],
                     backgroundColor: [
-                        documentStyle.getPropertyValue('--blue-500'), 
-                        documentStyle.getPropertyValue('--yellow-500'), 
-                        documentStyle.getPropertyValue('--green-500')
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)', 
                     ],
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--blue-400'), 
-                        documentStyle.getPropertyValue('--yellow-400'), 
-                        documentStyle.getPropertyValue('--green-400')
-                    ]
+                    borderColor: [
+                        'rgb(255, 159, 64)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)', 
+                    ],
+                    borderWidth: 1
                 }
             ]
-        }
+        };
         const options = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true
-                    }
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         };
 
-        setChartData(data);
+        setChartData(chartData);
         setChartOptions(options);
-    }, []);
+    }, [data, location]);
 
-  return (
-        <Chart type="bar" className="w-full lg:w-1/2" data={chartData} options={chartOptions} />
-  )
+    if (isFetching || isLoading) {
+        return <Loader />
+    }
+    if (isError) {
+        return <>
+            something went wrong
+        </>
+    }
+
+
+    return ( 
+            <Chart type="bar" width='' className=' w-full lg:w-1/2 ' data={chartData} options={chartOptions} />
+    
+    )
 }
+
